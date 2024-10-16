@@ -1,0 +1,45 @@
+.formContainer {
+  width: 495px;
+  margin: 0 auto;
+}
+.input {
+  height: 45px;
+  margin-top: 6px;
+}
+.otpInput {
+  background-color: white !important;
+  border: 1px solid #f8723d;
+  text-align: center;
+  color: black;
+  width: 70px;
+  height: 70px;
+  font-size: 20px;
+  transition: all .3s ease-in-out !important;
+}
+
+.otpInput:focus, .otpInput:hover{
+  border:2px solid #e69211 !important;
+  box-shadow: 1px #e69211 !important;
+  
+}
+.otpButton {
+  height: 45px;
+  font-weight: 400;
+  font-size: 18px;
+  font-weight: 600 !important;
+  background: #e55801;
+  align-self: flex-end; /* Assuming you meant to align it to the bottom */
+  margin-top: 20px;
+  border: none;
+  
+}
+.otpButton:hover {
+  height: 45px;
+  font-weight: 400;
+  font-size: 18px;
+  color: black !important;
+  background-color: #e55801 !important;
+  align-self: flex-end; /* Assuming you meant to align it to the bottom */
+  margin-top: 20px;
+  border: none;
+}

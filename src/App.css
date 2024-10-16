@@ -1,0 +1,22 @@
+.btn-hover-outline{
+width: 100% !important;
+height: 36px !important;
+display: flex !important;
+size:1.125rem !important;
+color:#EA5326 !important;
+font-weight: 600 !important;  
+background: #fff !important;
+align-items: center !important;
+justify-content: center !important;
+border: 2px solid #EA5326 !important;
+transition: all .5s ease-in-out !important;
+
+}
+
+
+
+.btn-hover-outline:hover{
+    color: #fff !important;
+    background: #EA5326 !important;
+    border: 2px solid #EA5326 !important;
+}

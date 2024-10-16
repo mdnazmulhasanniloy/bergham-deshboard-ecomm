@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif !important;
+}
+/* .ant-upload {
+  display: flex;
+  justify-content: center;
+  width: 100% !important;
+} */
+/* 
+.ant-upload-list-item-container {
+  width: 100% !important;
+  /* height: 200px !important; */
+/* } */
+/* .ant-upload-list-item-error {
+  border: 1px solid #fe6201 !important;
+} */
+/* .ant-upload-list-item .ant-upload-list-item-undefined {
+  width: 100% !important;
+} */
+.hide-scrollbar {
+  -ms-overflow-style: none !important ; /* Internet Explorer 10+ */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important; /* Safari and Chrome */
+}
+
+.required-indicator::after {
+  content: "*";
+  color: red;
+  position: absolute;
+  top: 0;
+  margin-left: 3px;
+}
+
+
+ 

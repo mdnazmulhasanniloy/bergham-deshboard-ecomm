@@ -1,0 +1,19 @@
+#add-product-detailed-desc .jodit-wysiwyg {
+  padding-left: 16px !important;
+}
+
+#add-product-detailed-desc ul {
+  list-style: inside !important;
+}
+
+#add-product-detailed-desc ol {
+  list-style: inside !important;
+  list-style-type: number !important;
+}
+
+#add-product-detailed-desc td {
+  border: solid 1px !important;
+}
+ 
+
+ 
