@@ -54,19 +54,20 @@ const ProfileForm = ({ ProfileData, imageFile, refetch }: any) => {
         placeholder="Enter your first name"
         size="large"
       />
-     
+
       <ResInput
         labelColor="#FD8533"
         label="Email"
         type="email"
         name="email"
+        disabled
         placeholder="Enter your email"
         size="large"
       />
       <ResInput
         labelColor="#FD8533"
         label="Phone Number"
-        type="tel"
+        type="number"
         name="phoneNumber"
         placeholder="Enter your phone number"
         size="large"

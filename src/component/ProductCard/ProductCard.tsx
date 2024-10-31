@@ -28,7 +28,9 @@ const ProductCard = ({ product }: { product: any }) => {
       <Row className="mt-2">
         <Col span={24}>
           <h1 className="text-20 font-500">Description</h1>
-          <p className="text-wite">{product?.shortDescription}</p>
+          <p className="text-wite">
+            {product?.shortDescription.slice(0, 150)}...
+          </p>
         </Col>
       </Row>
       <Row className="mt-6 border p-4 border-black text-black rounded-2xl text-18 font-500">

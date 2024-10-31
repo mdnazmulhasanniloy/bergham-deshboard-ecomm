@@ -29,12 +29,15 @@ import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { toast } from "sonner";
 import JoditEditor, { Jodit } from "jodit-react";
 import showImage from "../../../utils/showImage";
+import ResConfirm from "../../../component/UI/PopConfirm";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const EditProducts = () => {
   const navigate = useNavigate();
   const [updateProduct] = useUpdateProductMutation();
   const editor = useRef(null);
   const [longDescription, setLongDescription] = useState("");
+  // const [longDescription, deletekey] = useState("");
   const [longDescError, setLongDescError] = useState("");
   const productId = useParams()?.id;
 
@@ -209,6 +212,22 @@ const EditProducts = () => {
     );
   }
 
+  const handleDeleteBanner = async (key: any) => {
+    const toastId = toast.loading("Updating product...");
+    try {
+      await updateProduct({
+        _id: singleProduct?._id,
+        data: { deleteKey: [key] },
+      }).unwrap();
+
+      toast.success("Product updated successfully", {
+        id: toastId,
+        duration: 1800,
+      });
+    } catch (error) {
+      ErrorResponse(error, toastId);
+    }
+  };
   return (
     <div>
       <Row gutter={[16, 16]}>
@@ -372,25 +391,51 @@ const EditProducts = () => {
             <button className="hidden" type="submit" id="formSubmitBtn" />
           </EForm>
         </Col>
-        <Col span={8} className="flex justify-center">
-          <Upload
-            onChange={handleChange}
-            beforeUpload={beforeUpload}
-            fileList={fileList}
-            listType="picture"
-            maxCount={3}
-          >
-            <div className="border  text-18 font-500 text-primary border-primary rounded flex flex-col items-center  px-[200px] py-[20px] cursor-pointer ">
-              <UploadOutlined />
-              <button>Upload</button>
-            </div>
-          </Upload>
+        <Col span={8} className="flex justify-center mt-5">
+          <div className="flex flex-col items-center justify-start gap-6">
+            {singleProduct?.images?.length > 0 &&
+              singleProduct?.images?.map((item: any) => (
+                <div
+                  className="w-full h-[150px] relative group overflow-hidden"
+                  key={item?.key}
+                >
+                  <img
+                    alt="example"
+                    style={{ height: "100%", width: "100%" }}
+                    src={showImage(item?.url)}
+                  />
+                  <div className="group-hover:inset-0 top-[-600px] transition-all duration-500 ease-in-out h-full w-full absolute bg-[rgba(5,5,5,0.43)] flex  items-center justify-center">
+                    <ResConfirm handleOk={() => handleDeleteBanner(item?.key)}>
+                      <button
+                        // disabled={isDeleteLoading}
+                        className="px-4 py-4 bg-[#FF0000] text-white  rounded-full"
+                      >
+                        <RiDeleteBin5Line size={32} />
+                      </button>
+                    </ResConfirm>
+                  </div>
+                </div>
+              ))}
+
+            <Upload
+              onChange={handleChange}
+              beforeUpload={beforeUpload}
+              // fileList={fileList}
+              listType="picture"
+              maxCount={3}
+            >
+              <div className="border  text-18 font-500 text-primary border-primary rounded flex flex-col items-center  px-[200px] py-[20px] cursor-pointer ">
+                <UploadOutlined />
+                <button>Upload</button>
+              </div>
+            </Upload> 
+          </div>
         </Col>
       </Row>
-      <div className="flex justify-between gap-x-6 mt-10">
+      <div className="flex justify-between gap-x-6 mt-10 ">
         <Button
           htmlType="submit"
-          className="w-1/2 bg-primary h-[44px] text-white font-500 text-20"
+          className="w-1/2 bg-primary h-[44px] text-white font-500 text-20 border "
           onClick={() => document.getElementById("formSubmitBtn")?.click()}
         >
           Update

@@ -4,7 +4,11 @@ import { Badge, Button } from "antd";
 import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useProfileQuery } from "../redux/features/auth/authApi";
-import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
+import {
+  TUser,
+  useCurrentToken,
+  useCurrentUser,
+} from "../redux/features/auth/authSlice";
 import { setCollapsed } from "../redux/features/layout/layoutSlice";
 // import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -13,10 +17,14 @@ import { toast } from "sonner";
 import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
 import showImage from "../utils/showImage";
 import config from "../config";
+import { socket } from "../socket";
 
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
-  const { data: notificationData } = useGetMyNotificationQuery({ read: false });
+  const { data: notificationData, refetch } = useGetMyNotificationQuery({
+    read: false,
+  });
+  const token = useAppSelector(useCurrentToken);
   const User: TUser | null = useAppSelector(useCurrentUser);
   const { data: profile } = useProfileQuery(undefined);
   const { role }: any = User || {};
@@ -24,11 +32,36 @@ const HeaderLayout = () => {
     (state: { notification: { notification: any } }) =>
       state.notification.notification
   );
+
   useEffect(() => {
     if (notification?.message) {
       toast.info(notification?.message);
     }
   }, [notification]);
+
+  //socket \
+  useEffect(() => {
+    socket.auth = { token };
+    socket.connect();
+    const handleNotificationEvent = (data: any) => {
+      if (data) {
+        refetch();
+        data = null;
+      }
+    };
+
+    socket.on(
+      ("notification::" + User?.userId) as string,
+      handleNotificationEvent
+    );
+
+    return () => {
+      // Clean up the event listener when the component is unmounted
+      socket.off(User?.userId as string, handleNotificationEvent);
+      socket.disconnect();
+    };
+  }, [User]);
+
   const { pathname } = useLocation();
 
   const collapsed = useAppSelector(

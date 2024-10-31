@@ -79,7 +79,7 @@ const OtpForm = ({ type }: IotpForm) => {
     <div className={` mt-2  flex flex-col`} style={{ height: "300px" }}>
       <Row>
         {otp.map((digit, index) => (
-          <Col lg={6} className="flex justify-center">
+          <Col lg={4} className="flex justify-center">
             <Input
               key={index}
               value={digit}

@@ -29,8 +29,7 @@ const AdminDashboard = () => {
 
   const query: Record<string, any> = {};
   if (year) query["year"] = year;
-  const { data: dashboardRes } = useGetDashboardDataQuery(query);
-   console.log("🚀 ~ AdminDashboard ~ dashboardRes:", dashboardRes)
+  const { data: dashboardRes } = useGetDashboardDataQuery(query); 
    
   
   const dashBoardData :{

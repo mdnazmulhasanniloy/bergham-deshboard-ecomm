@@ -18,8 +18,7 @@ const AdminEarning = () => {
     todayIncome: 0,
     totalIncome: 0,
     allTransitions: [],
-  };
-  console.log("🚀 ~ AdminEarning ~ data:", data)
+  }; 
   const columns = [
     {
       title: "Order ID",
@@ -54,13 +53,22 @@ const AdminEarning = () => {
       },
     },
     {
-      title: "Commission",
-      dataIndex: "adminPercentage",
-      key: "adminPercentage",
+      title: "Payment Status",
+      dataIndex: "paymentStatus",
+      key: "paymentStatus",
       render: (data: any) => {
-        return priceFormat(data);
+        return data;
       },
     },
+    // {
+    //   title: "Commission",
+    //   dataIndex: "adminPercentage",
+    //   key: "adminPercentage",
+    //   render: (data: any) => {
+    //     console.log(data);
+    //     return priceFormat(data);
+    //   },
+    // },
     {
       title: "Date",
       dataIndex: "createdAt",

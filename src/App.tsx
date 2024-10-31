@@ -2,21 +2,25 @@
 import { useEffect } from "react";
 import "./App.css";
 import MainLayout from "./layout/MainLayout";
-import { TUser, useCurrentUser } from "./redux/features/auth/authSlice";
+import {
+  TUser,
+  useCurrentToken,
+  useCurrentUser,
+} from "./redux/features/auth/authSlice";
 import { setNotification } from "./redux/features/notification/notificationSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { socket } from "./socket";
 import PrivateRoute from "./router/PrivateRoutes";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function App() {
   const dispatch = useAppDispatch();
   const user: TUser | null = useAppSelector(useCurrentUser);
+  const token = useAppSelector(useCurrentToken);
   const navigate = useNavigate();
   const pathname: string = useLocation()?.pathname;
-  // console.log(pathname);
 
-  // Navigate to dashboard based on user role
   useEffect(() => {
     if (user?.role && pathname === "/") {
       navigate(`/${user?.role}/dashboard`);
@@ -24,12 +28,16 @@ function App() {
   }, [user?.role, pathname]);
 
   useEffect(() => {
+    socket.auth = { token };
     socket.connect();
-    const handleNotificationEvent = (data: any) => {
+    const handleNotificationEvent = (data: any) => { 
       dispatch(setNotification(data));
     };
 
-    socket.on(user?.userId as string, handleNotificationEvent);
+    socket.on(
+      ("notification::" + user?.userId) as string,
+      handleNotificationEvent
+    );
 
     return () => {
       // Clean up the event listener when the component is unmounted

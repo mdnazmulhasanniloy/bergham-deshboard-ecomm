@@ -34,7 +34,7 @@ const NewPassword = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className="flex justify-center items-center h-screen ">
-        <div className="w-[490px] h-[440px]  bg-white px-4 rounded">
+        <div className="w-[490px] pb-6  bg-white px-4 rounded">
           <div className=" mt-8 ">
             <NavLink to="/verify-otp">
               <LeftOutlined

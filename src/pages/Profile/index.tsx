@@ -4,6 +4,7 @@ import UseImageUpload from "../../hooks/useImageUpload";
 import { useProfileQuery } from "../../redux/features/auth/authApi";
 import showImage from "../../utils/showImage";
 import CustomSpinner from "../../component/CustomSpinner/CustomSpinner";
+import { CiCamera } from "react-icons/ci";
 const Profile = () => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const { data: profile, refetch, isLoading } = useProfileQuery(undefined);
@@ -26,8 +27,7 @@ const Profile = () => {
 
           <div className="space-y-1">
             <h1 className="text-20 w-full text-gray font-500">
-              Name:{" "}
-              {profile?.data?.name}
+              Name: {profile?.data?.name}
             </h1>
             <h1 className="text-20 w-full text-gray font-500">
               Email: {profile?.data?.email}

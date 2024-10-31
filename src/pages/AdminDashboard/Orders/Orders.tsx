@@ -18,14 +18,17 @@ const Orders = () => {
   const query:Record<string, any> ={} 
   query["limit"] = limit;
   query["page"] = page;
-  query["paymentStatus"] = 'paid';
+  query["paymentStatus"] = 'paid&cashOnDelivery';
+  // query["paymentStatus"] = '';
   if(status && status !== "All Data"){
     query["status"] = status;
   }
   query["searchTerm"] = search;
   const { data: orderRes } = useGetallOrdersQuery(query);
-  
+  // console.log();
   const ordersData = orderRes?.data?.data || [];  
+  
+  
   const copyToClipboard = (data:string) => {
     navigator.clipboard.writeText(data)
       .then(() => {
@@ -35,6 +38,8 @@ const Orders = () => {
         console.log('Something went wrong', err);
       });
   };
+
+
   const columns = [
     {
       title: "Order Id",
@@ -149,6 +154,7 @@ const orderStatuses = [
       </div>
         <ETable
           column={columns}
+          
           data={ordersData}
           pagination={{ pageSize: limit ?? 10, total: orderRes?.data?.meta?.total ?? 0}}
         />

@@ -4,7 +4,11 @@ import moment from "moment";
 import { useState } from "react";
 import EModal from "../../../component/Modal/Modal";
 import ETable from "../../../component/Table";
-import { useDeleteUserMutation, useGetAllUserQuery, useUpdateUserMutation } from "../../../redux/features/auth/authApi";
+import {
+  useDeleteUserMutation,
+  useGetAllUserQuery,
+  useUpdateUserMutation,
+} from "../../../redux/features/auth/authApi";
 import UsersDetails from "./UsersDetails";
 import { FaRegTrashAlt } from "react-icons/fa";
 import ResConfirm from "../../../component/UI/PopConfirm";
@@ -15,17 +19,20 @@ import { toast } from "sonner";
 
 const Users = () => {
   const [show, setShow] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(1);
   const [search, setSearch] = useState("");
   const [id, setid] = useState("");
   const query: Record<string, any> = {};
   query["searchTerm"] = search;
+  query["page"] = page;
+  query["limit"] = limit;
   query["role"] = "buyer";
   query["sort"] = "-createdAt";
   query["verification.status"] = true;
   const { data: users, isLoading, isFetching } = useGetAllUserQuery(query);
-  const allUsers = users?.data?.data|| []; 
-  
-  
+  const allUsers = users?.data?.data || [];
+
   const [BlockUnBlockedFn, { isSuccess }] = useUpdateUserMutation();
   const [deleteFn] = useDeleteUserMutation();
 
@@ -58,12 +65,11 @@ const Users = () => {
         data: { status: "active" },
       }).unwrap();
 
-      if ( res?.success) {
+      if (res?.success) {
         toast.success("this user unblock success", {
           id: "Block",
           duration: 3000,
         });
-
       } else {
         toast.success(res?.message, { id: "Block", duration: 3000 });
       }
@@ -88,13 +94,14 @@ const Users = () => {
       dataIndex: "key",
       key: "id",
       render: (data: any, record: any, index: any) => {
-        return index + 1;
+        // return index + 1 + limit / page;
+        return (page - 1) * limit + index + 1;
       },
     },
     {
       title: "Customer Name",
       dataIndex: "name",
-      key: "name", 
+      key: "name",
     },
     {
       title: "E-mail",
@@ -104,42 +111,50 @@ const Users = () => {
     {
       title: "Status",
       dataIndex: "status",
-      key: "status", 
+      key: "status",
     },
     {
       title: "Join Date",
       dataIndex: "createdAt",
+
       key: "createdAt",
       render: (data: any) => {
         return moment(data).format("LL");
       },
     },
     {
-      title: "Action",
+      title: <p className="text-center">Action</p>,
 
       key: "action",
       render: (data: any) => (
         <div className="flex items-center justify-center gap-5">
-        <EyeOutlined
-        
-          className="text-[#95de64] cursor-pointer text-20"
-          onClick={() => {
-            setid(data?._id);
-            setShow((prev: boolean) => !prev);
-          }}
-        />
-        <button>
-        <ResConfirm description="Are you sure to Delete this user?" handleOk={() => handelToDeleteUser(data?._id)}>
-
-        <FaRegTrashAlt   className="text-primary text-5xl text-20" />
-        </ResConfirm>
-        </button>
-        {data?.status === "blocked" ? (
-            <ResConfirm description="Are you sure to unblock this user." handleOk={() => UnBlockUser(data?._id)}>
+          <EyeOutlined
+            className="text-[#95de64] cursor-pointer text-20"
+            onClick={() => {
+              setid(data?._id);
+              setShow((prev: boolean) => !prev);
+            }}
+          />
+          <button>
+            <ResConfirm
+              description="Are you sure to Delete this user?"
+              handleOk={() => handelToDeleteUser(data?._id)}
+            >
+              <FaRegTrashAlt className="text-primary text-5xl text-20" />
+            </ResConfirm>
+          </button>
+          {data?.status === "blocked" ? (
+            <ResConfirm
+              description="Are you sure to unblock this user."
+              handleOk={() => UnBlockUser(data?._id)}
+            >
               <MdBlock className="text-18 cursor-pointer " color="red" />
             </ResConfirm>
           ) : (
-            <ResConfirm description="Are you sure to block this user." handleOk={() => BlockUser(data?._id)}>
+            <ResConfirm
+              description="Are you sure to block this user."
+              handleOk={() => BlockUser(data?._id)}
+            >
               <CgUnblock className="text-18 cursor-pointer" color="green" />
             </ResConfirm>
           )}
@@ -166,7 +181,13 @@ const Users = () => {
         loading={isLoading ?? isFetching}
         column={columns}
         data={allUsers}
-        pagination={{ total: allUsers.length, pageSize: 10 }}
+        pagination={{
+          total: users?.data?.meta?.total,
+          pageSize: limit,
+          onChange: (page: number, pageSize: number) => (
+            setPage(page), setLimit(pageSize)
+          ),
+        }}
       />
     </div>
   );
